@@ -47,10 +47,47 @@ export default function Home() {
 
         </div>
       </nav>
+      <section className="mx-auto max-w-7xl bg-[#181a1c]">
+        <div className="flex min-h-[600px] items-center gap-12 px-10 py-16">
 
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <h1 className="text-5xl font-bold">FITLOG</h1>
-        <p className="mt-4 text-gray-400">Workout Library</p>
+          {/* Left Side */}
+          <div className="flex-1">
+            <p className="mb-5 text-sm font-semibold tracking-[0.25em] text-[#ccff00]">
+              WORKOUT LIBRARY
+            </p>
+
+            <h1 className="text-5xl font-bold leading-tight md:text-6xl">
+              <span className="whitespace-nowrap">
+                TRAIN WITH INTENT. LOG
+              </span>
+              <br />
+              <span className="whitespace-nowrap">
+                EVERY SET.
+              </span>
+            </h1>
+
+            <p className="mt-6 max-w-lg text-lg leading-8 text-gray-400">
+              Build your workout plan, track every session, and train with purpose.
+            </p>
+
+            <a
+              href="#library"
+              className="mt-8 inline-block rounded-full bg-[#ccff00] px-6 py-3 font-semibold text-black transition hover:bg-[#b8e600]"
+            >
+              Browse Workouts
+            </a>
+          </div>
+
+          {/* Right Side */}
+          <div className="w-1/2">
+            <img
+              src="/assets/banner.png"
+              alt="Workout"
+              className="w-full"
+            />
+          </div>
+
+        </div>
       </section>
     </main>
   );
