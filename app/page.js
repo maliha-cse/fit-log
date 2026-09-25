@@ -1,4 +1,6 @@
-export default function Home() {
+export default async function Home() {
+  const response = await fetch("https://api.abcz.workers.dev/api/fitlog");
+  const workouts = await response.json();
   return (
     <main>
       <nav className="border-b border-white/10">
@@ -66,13 +68,14 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="mt-6 max-w-lg text-lg leading-8 text-gray-400">
-              Build your workout plan, track every session, and train with purpose.
+            <p className="mt-6 max-w-lg text-sm leading-6 text-gray-400">
+              FitLog is a dark, no-nonsense gym companion: pick a lift, lock it
+              into today's plan, and watch the week's work add up.
             </p>
 
             <a
               href="#library"
-              className="mt-8 inline-block rounded-full bg-[#ccff00] px-6 py-3 font-semibold text-black transition hover:bg-[#b8e600]"
+              className="mt-8 inline-block rounded-md bg-[#ccff00] px-5 py-2 text-xs font-bold uppercase text-black transition hover:bg-[#b8e600]"
             >
               Browse Workouts
             </a>
@@ -87,6 +90,66 @@ export default function Home() {
             />
           </div>
 
+        </div>
+      </section>
+      <section id="library" className="mx-auto max-w-7xl px-6 py-12">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold uppercase">
+            THE LIBRARY
+          </h2>
+
+          <p className="mt-1 text-xs text-gray-500">
+            Twelve lifts covering every major muscle group.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {workouts.map((workout) => (
+            <a
+              key={workout.id}
+              href={`/workout/${workout.id}`}
+              className="block overflow-hidden rounded-lg border border-white/10 bg-[#181a1c] transition hover:border-[#ccff00]"
+            >
+              <img
+                src={workout.image}
+                alt={workout.name}
+                className="h-44 w-full object-cover"
+              />
+
+              <div className="p-4">
+
+                {/* Muscle Groups */}
+                <div className="mb-3 flex flex-wrap gap-2">
+                  {workout.muscleGroups.map((group) => (
+                    <span
+                      key={group}
+                      className="rounded-full bg-[#ccff00] px-2 py-1 text-[9px] font-bold uppercase text-black"
+                    >
+                      {group}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Workout Name */}
+                <h3 className="text-sm font-bold uppercase">
+                  {workout.name}
+                </h3>
+
+                {/* Equipment */}
+                <p className="mt-1 text-[10px] text-gray-500">
+                  {workout.equipment}
+                </p>
+
+                {/* Stats */}
+                <div className="mt-4 flex items-center gap-4 border-t border-white/10 pt-3 text-[10px] text-gray-400">
+                  <span>◷ {workout.duration} min</span>
+                  <span>🔥 {workout.caloriesBurned} kcal</span>
+                  <span>★ {workout.rating}</span>
+                </div>
+
+              </div>
+            </a>
+          ))}
         </div>
       </section>
     </main>
