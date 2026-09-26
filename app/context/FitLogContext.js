@@ -9,7 +9,7 @@ export function FitLogProvider({ children }) {
   const [saved, setSaved] = useState([]);
   const [ready, setReady] = useState(false);
 
-  // Load saved data when the app starts
+  // Load saved data from localStorage
   useEffect(() => {
     const storedPlan = localStorage.getItem("fitlog-plan");
     const storedSaved = localStorage.getItem("fitlog-saved");
@@ -25,20 +25,21 @@ export function FitLogProvider({ children }) {
     setReady(true);
   }, []);
 
-  // Save plan whenever it changes
+  // Save plan to localStorage
   useEffect(() => {
     if (ready) {
       localStorage.setItem("fitlog-plan", JSON.stringify(plan));
     }
   }, [plan, ready]);
 
-  // Save saved workouts whenever they change
+  // Save saved workouts to localStorage
   useEffect(() => {
     if (ready) {
       localStorage.setItem("fitlog-saved", JSON.stringify(saved));
     }
   }, [saved, ready]);
 
+  // Add workout to today's plan
   const addToPlan = (workout) => {
     setPlan((currentPlan) => {
       const alreadyAdded = currentPlan.some(
@@ -53,12 +54,14 @@ export function FitLogProvider({ children }) {
     });
   };
 
+  // Remove workout from today's plan
   const removeFromPlan = (workoutId) => {
     setPlan((currentPlan) =>
       currentPlan.filter((workout) => workout.id !== workoutId)
     );
   };
 
+  // Save workout for later
   const saveWorkout = (workout) => {
     setSaved((currentSaved) => {
       const alreadySaved = currentSaved.some(
@@ -73,6 +76,13 @@ export function FitLogProvider({ children }) {
     });
   };
 
+  // Remove workout from saved
+  const removeFromSaved = (workoutId) => {
+    setSaved((currentSaved) =>
+      currentSaved.filter((workout) => workout.id !== workoutId)
+    );
+  };
+
   return (
     <FitLogContext.Provider
       value={{
@@ -81,6 +91,7 @@ export function FitLogProvider({ children }) {
         addToPlan,
         removeFromPlan,
         saveWorkout,
+        removeFromSaved,
       }}
     >
       {children}

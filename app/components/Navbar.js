@@ -24,11 +24,17 @@ export default function Navbar() {
 
         {/* Navigation Links */}
         <div className="hidden gap-8 md:flex">
-          <a href="/" className="text-[#ccff00]">
+          <a
+            href="/"
+            className="text-[#ccff00]"
+          >
             Workout
           </a>
 
-          <a href="/my-plan" className="text-gray-400 hover:text-white">
+          <a
+            href="/my-plan"
+            className="text-gray-400 hover:text-white"
+          >
             My Plan
           </a>
         </div>
@@ -43,7 +49,7 @@ export default function Navbar() {
           </a>
 
           <a
-            href="/my-plan"
+            href="/saved"
             className="rounded-full border border-white/30 px-4 py-2 text-sm"
           >
             Saved {saved.length}
