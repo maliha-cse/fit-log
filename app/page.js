@@ -1,10 +1,38 @@
 export const dynamic = "force-dynamic";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 export default async function Home() {
-  const response = await fetch("https://api.abcz.workers.dev/api/fitlog");
-  const workouts = await response.json();
+  let workouts = [];
+
+  try {
+    const response = await fetch(
+      "https://api.abcz.workers.dev/api/fitlog",
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status}`);
+    }
+
+    const contentType = response.headers.get("content-type");
+
+    if (!contentType?.includes("application/json")) {
+      throw new Error("API did not return JSON");
+    }
+
+    workouts = await response.json();
+
+    if (!Array.isArray(workouts)) {
+      workouts = [];
+    }
+  } catch (error) {
+    console.error("Workout API error:", error);
+    workouts = [];
+  }
 
   return (
     <main>
@@ -66,53 +94,64 @@ export default async function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {workouts.map((workout) => (
-            <a
-              key={workout.id}
-              href={`/workout/${workout.id}`}
-              className="block overflow-hidden rounded-lg border border-white/10 bg-[#181a1c] transition hover:border-[#ccff00]"
-            >
-              <img
-                src={workout.image}
-                alt={workout.name}
-                className="h-44 w-full object-cover"
-              />
+        {workouts.length === 0 ? (
+          <div className="rounded-lg border border-white/10 bg-[#181a1c] p-8 text-center">
+            <p className="text-sm text-gray-400">
+              Workout library is temporarily unavailable.
+            </p>
+            <p className="mt-2 text-xs text-gray-600">
+              Please try again later.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {workouts.map((workout) => (
+              <a
+                key={workout.id}
+                href={`/workout/${workout.id}`}
+                className="block overflow-hidden rounded-lg border border-white/10 bg-[#181a1c] transition hover:border-[#ccff00]"
+              >
+                <img
+                  src={workout.image}
+                  alt={workout.name}
+                  className="h-44 w-full object-cover"
+                />
 
-              <div className="p-4">
+                <div className="p-4">
 
-                {/* Muscle Groups */}
-                <div className="mb-3 flex flex-wrap gap-2">
-                  {workout.muscleGroups.map((group) => (
-                    <span
-                      key={group}
-                      className="rounded-full bg-[#ccff00] px-2 py-1 text-[9px] font-bold uppercase text-black"
-                    >
-                      {group}
-                    </span>
-                  ))}
+                  {/* Muscle Groups */}
+                  <div className="mb-3 flex flex-wrap gap-2">
+                    {workout.muscleGroups.map((group) => (
+                      <span
+                        key={group}
+                        className="rounded-full bg-[#ccff00] px-2 py-1 text-[9px] font-bold uppercase text-black"
+                      >
+                        {group}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Workout Name */}
+                  <h3 className="text-sm font-bold uppercase">
+                    {workout.name}
+                  </h3>
+
+                  {/* Equipment */}
+                  <p className="mt-1 text-[10px] text-gray-500">
+                    {workout.equipment}
+                  </p>
+
+                  {/* Stats */}
+                  <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/10 pt-3 text-[10px] text-gray-400">
+                    <span>◷ {workout.duration} min</span>
+                    <span>🔥 {workout.caloriesBurned} kcal</span>
+                    <span>★ {workout.rating}</span>
+                  </div>
                 </div>
-
-                {/* Workout Name */}
-                <h3 className="text-sm font-bold uppercase">
-                  {workout.name}
-                </h3>
-
-                {/* Equipment */}
-                <p className="mt-1 text-[10px] text-gray-500">
-                  {workout.equipment}
-                </p>
-
-                {/* Stats */}
-                <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/10 pt-3 text-[10px] text-gray-400">
-                  <span>◷ {workout.duration} min</span>
-                  <span>🔥 {workout.caloriesBurned} kcal</span>
-                  <span>★ {workout.rating}</span>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
+              </a>
+            ))}
+          </div>
+        )}
       </section>
 
       <Footer />
