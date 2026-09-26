@@ -1,57 +1,63 @@
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+
 export default async function Home() {
   const response = await fetch("https://api.abcz.workers.dev/api/fitlog");
   const workouts = await response.json();
-  return (
-     <main>
-      <Navbar />
-      
 
+  return (
+    <main>
+      <Navbar />
+
+      {/* Hero */}
       <section className="mx-auto max-w-7xl bg-[#181a1c]">
-        <div className="flex min-h-[600px] items-center gap-12 px-10 py-16">
+        <div className="flex min-h-[500px] flex-col items-center gap-8 px-6 py-12 sm:px-8 sm:py-14 lg:min-h-[600px] lg:flex-row lg:gap-12 lg:px-10 lg:py-16">
 
           {/* Left Side */}
-          <div className="flex-1">
-            <p className="mb-5 text-sm font-semibold tracking-[0.25em] text-[#ccff00]">
+          <div className="w-full flex-1">
+            <p className="mb-4 text-xs font-semibold tracking-[0.2em] text-[#ccff00] sm:mb-5 sm:text-sm sm:tracking-[0.25em]">
               WORKOUT LIBRARY
             </p>
 
-            <h1 className="text-5xl font-bold leading-tight md:text-6xl">
-              <span className="whitespace-nowrap">
+            <h1 className="text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
+              <span>
                 TRAIN WITH INTENT. LOG
               </span>
               <br />
-              <span className="whitespace-nowrap">
+              <span>
                 EVERY SET.
               </span>
             </h1>
 
-            <p className="mt-6 max-w-lg text-sm leading-6 text-gray-400">
+            <p className="mt-5 max-w-lg text-sm leading-6 text-gray-400 sm:mt-6">
               FitLog is a dark, no-nonsense gym companion: pick a lift, lock it
               into today's plan, and watch the week's work add up.
             </p>
 
             <a
               href="#library"
-              className="mt-8 inline-block rounded-md bg-[#ccff00] px-5 py-2 text-xs font-bold uppercase text-black transition hover:bg-[#b8e600]"
+              className="mt-7 inline-block rounded-md bg-[#ccff00] px-5 py-2 text-xs font-bold uppercase text-black transition hover:bg-[#b8e600] sm:mt-8"
             >
               Browse Workouts
             </a>
           </div>
 
           {/* Right Side */}
-          <div className="w-1/2">
+          <div className="w-full flex-1 lg:w-1/2">
             <img
               src="/assets/banner.png"
               alt="Workout"
-              className="w-full"
+              className="mx-auto w-full max-w-xl"
             />
           </div>
-
         </div>
       </section>
-      <section id="library" className="mx-auto max-w-7xl px-6 py-12">
+
+      {/* Library */}
+      <section
+        id="library"
+        className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12"
+      >
         <div className="mb-6">
           <h2 className="text-xl font-bold uppercase">
             THE LIBRARY
@@ -100,17 +106,17 @@ export default async function Home() {
                 </p>
 
                 {/* Stats */}
-                <div className="mt-4 flex items-center gap-4 border-t border-white/10 pt-3 text-[10px] text-gray-400">
+                <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/10 pt-3 text-[10px] text-gray-400">
                   <span>◷ {workout.duration} min</span>
                   <span>🔥 {workout.caloriesBurned} kcal</span>
                   <span>★ {workout.rating}</span>
                 </div>
-
               </div>
             </a>
           ))}
         </div>
       </section>
+
       <Footer />
     </main>
   );

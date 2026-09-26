@@ -1,6 +1,6 @@
 "use client";
-import Footer from "../components/Footer";
 
+import Footer from "../components/Footer";
 import { useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
 import { useFitLog } from "../context/FitLogContext";
@@ -44,7 +44,7 @@ export default function MyPlan() {
     <main className="min-h-screen bg-[#0d0f12] text-white">
       <Navbar />
 
-      <section className="mx-auto max-w-7xl px-6 py-10">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
         {/* Header */}
         <div>
           <h1 className="text-2xl font-bold uppercase">
@@ -90,8 +90,9 @@ export default function MyPlan() {
         </div>
 
         {/* Tabs + Sort */}
-        <div className="mt-6 flex items-center justify-between">
-          <div className="flex rounded-md border border-white/10 bg-[#13161c] p-1">
+        <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          {/* Tabs */}
+          <div className="flex w-fit rounded-md border border-white/10 bg-[#13161c] p-1">
             <button className="rounded bg-[#ccff00] px-4 py-2 text-[10px] font-medium text-black">
               Today's Plan
             </button>
@@ -104,6 +105,7 @@ export default function MyPlan() {
             </a>
           </div>
 
+          {/* Sort */}
           <div className="flex items-center gap-2">
             <span className="text-[10px] text-gray-500">
               Sort By
@@ -132,7 +134,7 @@ export default function MyPlan() {
         {/* Workout List */}
         <div className="mt-3 space-y-3">
           {plan.length === 0 ? (
-            <div className="rounded-lg border border-white/10 bg-[#0f1115] px-6 py-16 text-center">
+            <div className="rounded-lg border border-white/10 bg-[#0f1115] px-4 py-16 text-center sm:px-6">
               <h2 className="text-xs font-bold uppercase">
                 NOTHING HERE YET
               </h2>
@@ -158,7 +160,7 @@ export default function MyPlan() {
                 <img
                   src={workout.image}
                   alt={workout.name}
-                  className="h-24 w-full rounded-md object-cover sm:h-20 sm:w-28"
+                  className="h-40 w-full rounded-md object-cover sm:h-20 sm:w-28"
                 />
 
                 {/* Workout Info */}
@@ -187,24 +189,24 @@ export default function MyPlan() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 sm:ml-auto">
+                <div className="flex w-full flex-wrap items-center gap-2 sm:ml-auto sm:w-auto">
                   <a
                     href={`/workout/${workout.id}`}
-                    className="rounded-md border border-white/20 px-4 py-2 text-[9px] font-medium text-gray-300 hover:border-white/40 hover:text-white"
+                    className="flex-1 rounded-md border border-white/20 px-4 py-2 text-center text-[9px] font-medium text-gray-300 hover:border-white/40 hover:text-white sm:flex-none"
                   >
                     View Details
                   </a>
 
                   <button
                     onClick={() => removeFromPlan(workout.id)}
-                    className="rounded-md bg-[#ccff00] px-4 py-2 text-[9px] font-bold text-black hover:bg-[#b8e600]"
+                    className="flex-1 rounded-md bg-[#ccff00] px-4 py-2 text-[9px] font-bold text-black hover:bg-[#b8e600] sm:flex-none"
                   >
                     Mark as Done
                   </button>
 
                   <button
                     onClick={() => removeFromPlan(workout.id)}
-                    className="flex h-8 w-8 items-center justify-center rounded-md border border-white/10 text-sm text-gray-500 hover:border-red-400/40 hover:text-red-400"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-white/10 text-sm text-gray-500 hover:border-red-400/40 hover:text-red-400"
                     aria-label={`Remove ${workout.name}`}
                   >
                     ×
@@ -216,7 +218,6 @@ export default function MyPlan() {
         </div>
       </section>
 
-      
       <Footer />
     </main>
   );
