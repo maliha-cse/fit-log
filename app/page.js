@@ -1,10 +1,12 @@
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 export default async function Home() {
   const response = await fetch("https://api.abcz.workers.dev/api/fitlog");
   const workouts = await response.json();
   return (
      <main>
       <Navbar />
+      
 
       <section className="mx-auto max-w-7xl bg-[#181a1c]">
         <div className="flex min-h-[600px] items-center gap-12 px-10 py-16">
@@ -109,6 +111,7 @@ export default async function Home() {
           ))}
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

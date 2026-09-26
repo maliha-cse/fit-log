@@ -1,5 +1,6 @@
 "use client";
-
+import Footer from "../../components/Footer";
+import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { useFitLog } from "../../context/FitLogContext";
@@ -8,7 +9,7 @@ export default function WorkoutDetails({ params }) {
   const [workout, setWorkout] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { addToPlan, saveWorkout } = useFitLog();
+  const { plan, addToPlan, saveWorkout } = useFitLog();
 
   useEffect(() => {
     async function loadWorkout() {
@@ -52,7 +53,9 @@ export default function WorkoutDetails({ params }) {
       </main>
     );
   }
-
+  const alreadyInPlan = plan.some(
+    (item) => String(item.id) === String(workout.id)
+  );
   return (
     <main>
       <Navbar />
@@ -149,14 +152,28 @@ export default function WorkoutDetails({ params }) {
             {/* Buttons */}
             <div className="mt-10 flex flex-wrap gap-4">
               <button
-                onClick={() => addToPlan(workout)}
-                className="rounded-lg bg-[#ccff00] px-6 py-3 font-bold text-black transition hover:opacity-90"
+                onClick={() => {
+                  if (alreadyInPlan) {
+                    toast.info("Already in your plan!");
+                    return;
+                  }
+
+                  addToPlan(workout);
+                  toast.success("Added to today's plan!");
+                }}
+                className={`rounded-lg px-6 py-3 font-bold transition ${alreadyInPlan
+                    ? "cursor-not-allowed bg-gray-700 text-gray-400"
+                    : "bg-[#ccff00] text-black hover:opacity-90"
+                  }`}
               >
-                Add to today's plan
+                {alreadyInPlan ? "Already in your plan" : "Add to today's plan"}
               </button>
 
               <button
-                onClick={() => saveWorkout(workout)}
+                onClick={() => {
+                  saveWorkout(workout);
+                  toast.success("Saved for later!");
+                }}
                 className="rounded-lg border border-white/30 px-6 py-3 font-bold text-white transition hover:border-[#ccff00]"
               >
                 Save for later
@@ -165,6 +182,7 @@ export default function WorkoutDetails({ params }) {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }
