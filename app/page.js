@@ -1,7 +1,7 @@
-export const dynamic = "force-dynamic";
-
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   let workouts = [];
@@ -14,24 +14,17 @@ export default async function Home() {
       }
     );
 
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`);
-    }
+    if (response.ok) {
+      const data = await response.json();
 
-    const contentType = response.headers.get("content-type");
-
-    if (!contentType?.includes("application/json")) {
-      throw new Error("API did not return JSON");
-    }
-
-    workouts = await response.json();
-
-    if (!Array.isArray(workouts)) {
-      workouts = [];
+      if (Array.isArray(data)) {
+        workouts = data;
+      }
+    } else {
+      console.error("Workout API error:", response.status);
     }
   } catch (error) {
-    console.error("Workout API error:", error);
-    workouts = [];
+    console.error("Failed to load workouts:", error);
   }
 
   return (
@@ -40,18 +33,22 @@ export default async function Home() {
 
       {/* Hero */}
       <section className="mx-auto max-w-7xl bg-[#181a1c]">
-        <div className="flex min-h-[600px] flex-col items-center gap-10 px-4 py-12 sm:px-6 md:flex-row md:gap-12 md:px-10 md:py-16">
+        <div className="flex min-h-[600px] items-center gap-12 px-10 py-16">
 
           {/* Left Side */}
-          <div className="w-full flex-1">
-            <p className="mb-5 text-sm font-semibold tracking-[0.2em] text-[#ccff00] sm:tracking-[0.25em]">
+          <div className="flex-1">
+            <p className="mb-5 text-sm font-semibold tracking-[0.25em] text-[#ccff00]">
               WORKOUT LIBRARY
             </p>
 
-            <h1 className="text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
-              TRAIN WITH INTENT. LOG
+            <h1 className="text-5xl font-bold leading-tight md:text-6xl">
+              <span className="whitespace-nowrap">
+                TRAIN WITH INTENT. LOG
+              </span>
               <br />
-              EVERY SET.
+              <span className="whitespace-nowrap">
+                EVERY SET.
+              </span>
             </h1>
 
             <p className="mt-6 max-w-lg text-sm leading-6 text-gray-400">
@@ -68,11 +65,11 @@ export default async function Home() {
           </div>
 
           {/* Right Side */}
-          <div className="w-full md:w-1/2">
+          <div className="w-1/2">
             <img
               src="/assets/banner.png"
               alt="Workout"
-              className="mx-auto w-full max-w-xl"
+              className="w-full"
             />
           </div>
 
@@ -82,7 +79,7 @@ export default async function Home() {
       {/* Library */}
       <section
         id="library"
-        className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12"
+        className="mx-auto max-w-7xl px-6 py-12"
       >
         <div className="mb-6">
           <h2 className="text-xl font-bold uppercase">
@@ -99,6 +96,7 @@ export default async function Home() {
             <p className="text-sm text-gray-400">
               Workout library is temporarily unavailable.
             </p>
+
             <p className="mt-2 text-xs text-gray-600">
               Please try again later.
             </p>
@@ -121,7 +119,7 @@ export default async function Home() {
 
                   {/* Muscle Groups */}
                   <div className="mb-3 flex flex-wrap gap-2">
-                    {workout.muscleGroups.map((group) => (
+                    {workout.muscleGroups?.map((group) => (
                       <span
                         key={group}
                         className="rounded-full bg-[#ccff00] px-2 py-1 text-[9px] font-bold uppercase text-black"
@@ -142,11 +140,20 @@ export default async function Home() {
                   </p>
 
                   {/* Stats */}
-                  <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/10 pt-3 text-[10px] text-gray-400">
-                    <span>◷ {workout.duration} min</span>
-                    <span>🔥 {workout.caloriesBurned} kcal</span>
-                    <span>★ {workout.rating}</span>
+                  <div className="mt-4 flex items-center gap-4 border-t border-white/10 pt-3 text-[10px] text-gray-400">
+                    <span>
+                      ◷ {workout.duration} min
+                    </span>
+
+                    <span>
+                      🔥 {workout.caloriesBurned} kcal
+                    </span>
+
+                    <span>
+                      ★ {workout.rating}
+                    </span>
                   </div>
+
                 </div>
               </a>
             ))}
