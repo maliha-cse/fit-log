@@ -1,11 +1,42 @@
-export default async function WorkoutDetails({ params }) {
-  const { id } = await params;
+"use client";
 
-  const response = await fetch(
-    `https://api.abcz.workers.dev/api/fitlog/${id}`
-  );
+import { useEffect, useState } from "react";
+import { useFitLog } from "../../context/FitLogContext";
 
-  if (!response.ok) {
+export default function WorkoutDetails({ params }) {
+  const [workout, setWorkout] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const { addToPlan, saveWorkout } = useFitLog();
+
+  useEffect(() => {
+    async function loadWorkout() {
+      const { id } = await params;
+
+      const response = await fetch(
+        `https://api.abcz.workers.dev/api/fitlog/${id}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setWorkout(data);
+      }
+
+      setLoading(false);
+    }
+
+    loadWorkout();
+  }, [params]);
+
+  if (loading) {
+    return (
+      <main className="mx-auto max-w-7xl px-6 py-20">
+        <p className="text-gray-400">Loading workout...</p>
+      </main>
+    );
+  }
+
+  if (!workout) {
     return (
       <main className="mx-auto max-w-7xl px-6 py-20">
         <h1 className="text-3xl font-bold">Workout not found.</h1>
@@ -13,13 +44,11 @@ export default async function WorkoutDetails({ params }) {
     );
   }
 
-  const workout = await response.json();
-
   return (
     <main className="mx-auto max-w-7xl px-6 py-16">
       <div className="grid gap-12 md:grid-cols-2">
 
-        {/* Left Side - Image */}
+        {/* Image */}
         <div>
           <img
             src={workout.image}
@@ -28,7 +57,7 @@ export default async function WorkoutDetails({ params }) {
           />
         </div>
 
-        {/* Right Side - Details */}
+        {/* Details */}
         <div>
           <h1 className="text-4xl font-bold uppercase">
             {workout.name}
@@ -117,11 +146,17 @@ export default async function WorkoutDetails({ params }) {
 
           {/* Buttons */}
           <div className="mt-8 flex flex-wrap gap-4">
-            <button className="rounded-md bg-[#ccff00] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#b8e600]">
+            <button
+              onClick={() => addToPlan(workout)}
+              className="rounded-md bg-[#ccff00] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#b8e600]"
+            >
               Add to today's plan
             </button>
 
-            <button className="rounded-md border border-white/20 px-5 py-3 text-sm font-bold transition hover:border-white/50">
+            <button
+              onClick={() => saveWorkout(workout)}
+              className="rounded-md border border-white/20 px-5 py-3 text-sm font-bold transition hover:border-white/50"
+            >
               Save for later
             </button>
           </div>
