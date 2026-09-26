@@ -11,45 +11,42 @@ export default async function Home() {
 
       {/* Hero */}
       <section className="mx-auto max-w-7xl bg-[#181a1c]">
-        <div className="flex min-h-[500px] flex-col items-center gap-8 px-6 py-12 sm:px-8 sm:py-14 lg:min-h-[600px] lg:flex-row lg:gap-12 lg:px-10 lg:py-16">
+        <div className="flex min-h-[600px] flex-col items-center gap-10 px-4 py-12 sm:px-6 md:flex-row md:gap-12 md:px-10 md:py-16">
 
           {/* Left Side */}
           <div className="w-full flex-1">
-            <p className="mb-4 text-xs font-semibold tracking-[0.2em] text-[#ccff00] sm:mb-5 sm:text-sm sm:tracking-[0.25em]">
+            <p className="mb-5 text-sm font-semibold tracking-[0.2em] text-[#ccff00] sm:tracking-[0.25em]">
               WORKOUT LIBRARY
             </p>
 
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
-              <span>
-                TRAIN WITH INTENT. LOG
-              </span>
+              TRAIN WITH INTENT. LOG
               <br />
-              <span>
-                EVERY SET.
-              </span>
+              EVERY SET.
             </h1>
 
-            <p className="mt-5 max-w-lg text-sm leading-6 text-gray-400 sm:mt-6">
+            <p className="mt-6 max-w-lg text-sm leading-6 text-gray-400">
               FitLog is a dark, no-nonsense gym companion: pick a lift, lock it
               into today's plan, and watch the week's work add up.
             </p>
 
             <a
               href="#library"
-              className="mt-7 inline-block rounded-md bg-[#ccff00] px-5 py-2 text-xs font-bold uppercase text-black transition hover:bg-[#b8e600] sm:mt-8"
+              className="mt-8 inline-block rounded-md bg-[#ccff00] px-5 py-2 text-xs font-bold uppercase text-black transition hover:bg-[#b8e600]"
             >
               Browse Workouts
             </a>
           </div>
 
           {/* Right Side */}
-          <div className="w-full flex-1 lg:w-1/2">
+          <div className="w-full md:w-1/2">
             <img
               src="/assets/banner.png"
               alt="Workout"
               className="mx-auto w-full max-w-xl"
             />
           </div>
+
         </div>
       </section>
 
